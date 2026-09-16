@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,102 +7,118 @@
 <title>Multiplayer Fight</title>
 
 <style>
-* { box-sizing: border-box; }
+*{box-sizing:border-box}
 
-html, body {
-    margin: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-    background: #111;
-    font-family: Arial, sans-serif;
-    user-select: none;
-}
-
-canvas {
-    display: block;
-    width: 100vw;
-    height: 100vh;
-    background: #181818;
-    cursor: crosshair;
+html,body{
+    margin:0;
+    width:100%;
+    height:100%;
+    overflow:hidden;
+    background:#111;
+    font-family:Arial,sans-serif;
+    user-select:none;
 }
 
-#status {
-    position: fixed;
-    left: 15px;
-    top: 15px;
-    padding: 8px 12px;
-    background: rgba(0,0,0,.65);
-    color: white;
-    border-radius: 6px;
-    font-size: 14px;
-    pointer-events: none;
+canvas{
+    display:block;
+    width:100vw;
+    height:100vh;
+    background:#181818;
+    cursor:crosshair;
 }
 
-#deathOverlay {
-    position: fixed;
-    inset: 0;
-    display: none;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    background: rgba(120,0,0,.25);
-    color: white;
-    pointer-events: none;
-    text-shadow: 0 2px 6px rgba(0,0,0,.8);
+#status{
+    position:fixed;
+    left:15px;
+    top:15px;
+    padding:8px 12px;
+    background:rgba(0,0,0,.65);
+    color:white;
+    border-radius:6px;
+    font-size:14px;
+    pointer-events:none;
 }
-#deathOverlay h1 { font-size: 42px; margin: 0 0 8px; letter-spacing: 2px; }
-#deathOverlay p { font-size: 16px; margin: 0; opacity: .85; }
 
-#chatLog {
-    position: fixed;
-    left: 15px;
-    bottom: 55px;
-    width: 320px;
-    max-height: 160px;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column-reverse;
-    font-size: 13px;
-    pointer-events: none;
+#deathOverlay{
+    position:fixed;
+    inset:0;
+    display:none;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    background:rgba(120,0,0,.25);
+    color:white;
+    pointer-events:none;
+    text-shadow:0 2px 6px rgba(0,0,0,.8);
 }
-#chatLog div {
-    background: rgba(0,0,0,.55);
-    color: #eee;
-    padding: 3px 8px;
-    border-radius: 4px;
-    margin-top: 4px;
-    width: fit-content;
-    max-width: 100%;
-    word-break: break-word;
-}
-#chatLog div b { color: #7cd6ff; }
 
-#chatInputWrap {
-    position: fixed;
-    left: 15px;
-    bottom: 15px;
-    width: 320px;
-    display: none;
+#deathOverlay h1{
+    font-size:42px;
+    margin:0 0 8px;
+    letter-spacing:2px;
 }
-#chatInput {
-    width: 100%;
-    padding: 8px 10px;
-    border-radius: 6px;
-    border: none;
-    outline: none;
-    font-size: 14px;
-    background: rgba(0,0,0,.75);
-    color: white;
+
+#deathOverlay p{
+    font-size:16px;
+    margin:0;
+    opacity:.85;
 }
-#chatHint {
-    position: fixed;
-    left: 15px;
-    bottom: 15px;
-    padding: 6px 10px;
-    color: rgba(255,255,255,.5);
-    font-size: 12px;
-    pointer-events: none;
+
+#chatLog{
+    position:fixed;
+    left:15px;
+    bottom:55px;
+    width:320px;
+    max-height:160px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column-reverse;
+    font-size:13px;
+    pointer-events:none;
+}
+
+#chatLog div{
+    background:rgba(0,0,0,.55);
+    color:#eee;
+    padding:3px 8px;
+    border-radius:4px;
+    margin-top:4px;
+    width:fit-content;
+    max-width:100%;
+    word-break:break-word;
+}
+
+#chatLog div b{
+    color:#7cd6ff;
+}
+
+#chatInputWrap{
+    position:fixed;
+    left:15px;
+    bottom:15px;
+    width:320px;
+    display:none;
+}
+
+#chatInput{
+    width:100%;
+    padding:8px 10px;
+    border-radius:6px;
+    border:none;
+    outline:none;
+    font-size:14px;
+    background:rgba(0,0,0,.75);
+    color:white;
+}
+
+#chatHint{
+    position:fixed;
+    left:15px;
+    bottom:15px;
+    padding:6px 10px;
+    color:rgba(255,255,255,.5);
+    font-size:12px;
+    pointer-events:none;
 }
 </style>
 </head>
@@ -109,10 +126,17 @@ canvas {
 <body>
 
 <canvas id="game"></canvas>
+
 <div id="status">Connecting...</div>
+
 <div id="chatHint">Press Enter to chat</div>
 <div id="chatLog"></div>
-<div id="chatInputWrap"><input id="chatInput" maxlength="200" placeholder="Message... (Enter to send, Esc to cancel)"></div>
+
+<div id="chatInputWrap">
+    <input id="chatInput"
+    maxlength="200"
+    placeholder="Message... (Enter to send, Esc to cancel)">
+</div>
 
 <div id="deathOverlay">
     <h1>YOU DIED</h1>
@@ -120,8 +144,15 @@ canvas {
 </div>
 
 <script>
+
 const canvas = document.getElementById("game");
-const ctx = canvas.getContext("2d");
+const ctx = canvas.getContext("2d", {
+    alpha:false,
+    desynchronized:true
+});
+
+ctx.imageSmoothingEnabled = false;
+
 const statusEl = document.getElementById("status");
 const deathOverlay = document.getElementById("deathOverlay");
 const respawnText = document.getElementById("respawnText");
@@ -139,430 +170,1539 @@ gunImage.src = "gun.png";
 const bulletImage = new Image();
 bulletImage.src = "bullet.png";
 
-function resize() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+
+/* =========================
+   CANVAS
+========================= */
+
+function resize(){
+
+    const dpr = Math.min(window.devicePixelRatio || 1,1.5);
+
+    canvas.width = Math.floor(innerWidth * dpr);
+    canvas.height = Math.floor(innerHeight * dpr);
+
+    canvas.style.width = innerWidth + "px";
+    canvas.style.height = innerHeight + "px";
+
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+
+    ctx.imageSmoothingEnabled = false;
 }
-window.addEventListener("resize", resize);
+
+window.addEventListener("resize",resize);
 resize();
 
-// ---- World / networking config ----
+
+/* =========================
+   WORLD
+========================= */
+
 let WORLD_W = 1600;
 let WORLD_H = 900;
+
 const MAX_HEALTH = 100;
-const UPDATE_SEND_INTERVAL = 45; // ms — throttled movement updates (less network spam, less perceived lag)
+
+/* Daha sık hareket gönder */
+const UPDATE_SEND_INTERVAL = 30;
+
+/* Daha hızlı silah */
+const FIRE_RATE = 80;
+
+/* Local bullet */
+const BULLET_SPEED = 14;
+const BULLET_LIFE = 65;
+
+const MAX_BULLETS = 100;
+const MAX_BLOOD = 180;
+
+
+/* =========================
+   SOCKET
+========================= */
 
 const socket = new WebSocket("ws://45.74.244.203:3000");
 
 let myId = null;
-let myName = (prompt("Your name:", "Player") || "Player").slice(0, 20);
 
-const players = {};   // id -> {x,y,angle,health,alive,name,targetX,targetY}
-const bullets = [];   // local visual bullets
-const blood = [];     // blood particles
+let myName =
+    (prompt("Your name:","Player") || "Player")
+    .slice(0,20);
+
+
+const players = {};
+const bullets = [];
+const blood = [];
+
+
+/* =========================
+   INPUT
+========================= */
 
 const keys = {};
-const mouse = { x: innerWidth / 2, y: innerHeight / 2, down: false };
 
-const me = {
-    x: 400, y: 300, angle: 0, speed: 4,
-    health: MAX_HEALTH, alive: true, name: myName
+const mouse = {
+    x:innerWidth / 2,
+    y:innerHeight / 2,
+    down:false
 };
 
-let spectateTargetId = null;
-let camX = 0, camY = 0;
 
-// ---- Input ----
-document.addEventListener("keydown", e => {
-    if (document.activeElement === chatInput) {
-        if (e.key === "Enter") sendChat();
-        if (e.key === "Escape") closeChat();
+/* =========================
+   PLAYER
+========================= */
+
+const me = {
+
+    x:400,
+    y:300,
+
+    angle:0,
+
+    speed:4.5,
+
+    health:MAX_HEALTH,
+
+    alive:true,
+
+    name:myName
+
+};
+
+
+let spectateTargetId = null;
+
+let camX = 0;
+let camY = 0;
+
+
+/* =========================
+   INPUT EVENTS
+========================= */
+
+document.addEventListener("keydown",e=>{
+
+    if(document.activeElement === chatInput){
+
+        if(e.key === "Enter"){
+            sendChat();
+        }
+
+        if(e.key === "Escape"){
+            closeChat();
+        }
+
         return;
     }
 
-    if (e.key === "Enter") { openChat(); e.preventDefault(); return; }
+
+    if(e.key === "Enter"){
+
+        openChat();
+
+        e.preventDefault();
+
+        return;
+    }
+
 
     keys[e.key.toLowerCase()] = true;
-    if (["w","a","s","d"," "].includes(e.key.toLowerCase())) e.preventDefault();
 
-    if (!me.alive && e.key.toLowerCase() === "n") cycleSpectateTarget();
+
+    if(
+        ["w","a","s","d"," "]
+        .includes(e.key.toLowerCase())
+    ){
+        e.preventDefault();
+    }
+
+
+    if(
+        !me.alive &&
+        e.key.toLowerCase() === "n"
+    ){
+        cycleSpectateTarget();
+    }
+
 });
 
-document.addEventListener("keyup", e => {
+
+document.addEventListener("keyup",e=>{
     keys[e.key.toLowerCase()] = false;
 });
 
-canvas.addEventListener("mousemove", e => {
+
+canvas.addEventListener("mousemove",e=>{
+
     mouse.x = e.clientX;
     mouse.y = e.clientY;
+
 });
 
-canvas.addEventListener("mousedown", e => {
-    if (e.button === 0) { mouse.down = true; shoot(); }
+
+canvas.addEventListener("mousedown",e=>{
+
+    if(e.button === 0){
+
+        mouse.down = true;
+
+        shoot();
+
+    }
+
 });
 
-window.addEventListener("mouseup", e => {
-    if (e.button === 0) mouse.down = false;
+
+window.addEventListener("mouseup",e=>{
+
+    if(e.button === 0){
+        mouse.down = false;
+    }
+
 });
 
-function openChat() {
+
+/* =========================
+   CHAT
+========================= */
+
+function openChat(){
+
     chatInputWrap.style.display = "block";
+
     chatHint.style.display = "none";
+
     chatInput.focus();
+
 }
-function closeChat() {
+
+
+function closeChat(){
+
     chatInputWrap.style.display = "none";
+
     chatHint.style.display = "block";
+
     chatInput.value = "";
+
     chatInput.blur();
+
 }
-function sendChat() {
+
+
+function sendChat(){
+
     const text = chatInput.value.trim();
-    if (text && socket.readyState === WebSocket.OPEN) {
-        socket.send(JSON.stringify({ type: "chat", text }));
+
+    if(
+        text &&
+        socket.readyState === WebSocket.OPEN
+    ){
+
+        socket.send(JSON.stringify({
+            type:"chat",
+            text
+        }));
+
     }
+
     closeChat();
+
 }
-function addChatLine(name, text) {
+
+
+function addChatLine(name,text){
+
     const div = document.createElement("div");
+
     const b = document.createElement("b");
+
     b.textContent = name + ": ";
+
     div.appendChild(b);
-    div.appendChild(document.createTextNode(text));
+
+    div.appendChild(
+        document.createTextNode(text)
+    );
+
     chatLog.prepend(div);
-    while (chatLog.children.length > 30) chatLog.removeChild(chatLog.lastChild);
-}
 
-// ---- Networking ----
-socket.onopen = () => {
-    statusEl.textContent = "CONNECTED";
-    if (myName) socket.send(JSON.stringify({ type: "name", name: myName }));
-};
-socket.onerror = () => { statusEl.textContent = "CONNECTION ERROR"; };
-socket.onclose = () => { statusEl.textContent = "DISCONNECTED"; };
-
-socket.onmessage = event => {
-    const data = JSON.parse(event.data);
-
-    switch (data.type) {
-        case "init": {
-            myId = data.id;
-            if (data.world) { WORLD_W = data.world.w; WORLD_H = data.world.h; }
-            for (const p of data.players) {
-                players[p.id] = { ...p, targetX: p.x, targetY: p.y };
-            }
-            players[myId] = me;
-            break;
-        }
-        case "join": {
-            players[data.player.id] = { ...data.player, targetX: data.player.x, targetY: data.player.y };
-            break;
-        }
-        case "rename": {
-            if (players[data.id]) players[data.id].name = data.name;
-            break;
-        }
-        case "update": {
-            if (data.id === myId) return;
-            if (!players[data.id]) {
-                players[data.id] = { x: data.x, y: data.y, angle: data.angle, health: MAX_HEALTH, alive: true, name: "Player" + data.id };
-            }
-            players[data.id].targetX = data.x;
-            players[data.id].targetY = data.y;
-            players[data.id].angle = data.angle;
-            break;
-        }
-        case "leave": {
-            delete players[data.id];
-            if (spectateTargetId === data.id) spectateTargetId = null;
-            break;
-        }
-        case "shoot": {
-            if (data.id !== myId) createBullet(data.x, data.y, data.angle);
-            break;
-        }
-        case "hit": {
-            spawnBlood(data.x, data.y);
-            if (players[data.id]) players[data.id].health = data.health;
-            if (data.id === myId) me.health = data.health;
-            break;
-        }
-        case "death": {
-            if (players[data.id]) players[data.id].alive = false;
-            if (data.id === myId) {
-                me.alive = false;
-                mouse.down = false;
-                deathOverlay.style.display = "flex";
-                pickSpectateTarget();
-            }
-            break;
-        }
-        case "respawn": {
-            if (data.id === myId) {
-                me.x = data.x; me.y = data.y; me.health = data.health; me.alive = true;
-                deathOverlay.style.display = "none";
-                spectateTargetId = null;
-            } else if (players[data.id]) {
-                players[data.id].x = data.x;
-                players[data.id].y = data.y;
-                players[data.id].targetX = data.x;
-                players[data.id].targetY = data.y;
-                players[data.id].health = data.health;
-                players[data.id].alive = true;
-            }
-            break;
-        }
-        case "chat": {
-            const name = data.id === myId ? myName : (players[data.id] ? players[data.id].name : "Player" + data.id);
-            addChatLine(name, data.text);
-            break;
-        }
+    while(chatLog.children.length > 30){
+        chatLog.removeChild(chatLog.lastChild);
     }
+
+}
+
+
+/* =========================
+   NETWORK
+========================= */
+
+socket.onopen = ()=>{
+
+    statusEl.textContent = "CONNECTED";
+
+    socket.send(JSON.stringify({
+        type:"name",
+        name:myName
+    }));
+
 };
 
-// ---- Spectate helpers ----
-function pickSpectateTarget() {
-    const ids = Object.keys(players).filter(id => id != myId && players[id].alive);
-    spectateTargetId = ids.length ? ids[0] : null;
-}
-function cycleSpectateTarget() {
-    const ids = Object.keys(players).filter(id => id != myId && players[id].alive);
-    if (!ids.length) { spectateTargetId = null; return; }
-    const cur = ids.indexOf(String(spectateTargetId));
-    spectateTargetId = ids[(cur + 1) % ids.length];
+
+socket.onerror = ()=>{
+
+    statusEl.textContent =
+        "CONNECTION ERROR";
+
+};
+
+
+socket.onclose = ()=>{
+
+    statusEl.textContent =
+        "DISCONNECTED";
+
+};
+
+
+socket.onmessage = event=>{
+
+    let data;
+
+    try{
+        data = JSON.parse(event.data);
+    }catch{
+        return;
+    }
+
+
+    switch(data.type){
+
+
+        case "init":{
+
+            myId = data.id;
+
+            if(data.world){
+
+                WORLD_W = data.world.w;
+                WORLD_H = data.world.h;
+
+            }
+
+
+            for(const p of data.players){
+
+                players[p.id] = {
+
+                    ...p,
+
+                    targetX:p.x,
+                    targetY:p.y
+
+                };
+
+            }
+
+
+            players[myId] = me;
+
+            break;
+        }
+
+
+        case "join":{
+
+            const p = data.player;
+
+            players[p.id] = {
+
+                ...p,
+
+                targetX:p.x,
+                targetY:p.y
+
+            };
+
+            break;
+        }
+
+
+        case "rename":{
+
+            if(players[data.id]){
+
+                players[data.id].name =
+                    data.name;
+
+            }
+
+            break;
+        }
+
+
+        case "update":{
+
+            if(data.id === myId){
+                return;
+            }
+
+
+            let p = players[data.id];
+
+
+            if(!p){
+
+                p = players[data.id] = {
+
+                    x:data.x,
+                    y:data.y,
+
+                    targetX:data.x,
+                    targetY:data.y,
+
+                    angle:data.angle,
+
+                    health:MAX_HEALTH,
+
+                    alive:true,
+
+                    name:"Player" + data.id
+
+                };
+
+            }
+
+
+            p.targetX = data.x;
+            p.targetY = data.y;
+
+            p.angle = data.angle;
+
+
+            if(data.health !== undefined){
+                p.health = data.health;
+            }
+
+
+            if(data.alive !== undefined){
+                p.alive = data.alive;
+            }
+
+
+            break;
+        }
+
+
+        case "leave":{
+
+            delete players[data.id];
+
+            if(
+                spectateTargetId === data.id
+            ){
+                spectateTargetId = null;
+            }
+
+            break;
+        }
+
+
+        case "shoot":{
+
+            if(data.id !== myId){
+
+                createBullet(
+                    data.x,
+                    data.y,
+                    data.angle
+                );
+
+            }
+
+            break;
+        }
+
+
+        case "hit":{
+
+            spawnBlood(
+                data.x,
+                data.y
+            );
+
+
+            if(players[data.id]){
+
+                players[data.id].health =
+                    data.health;
+
+            }
+
+
+            if(data.id === myId){
+
+                me.health =
+                    data.health;
+
+            }
+
+            break;
+        }
+
+
+        case "death":{
+
+            if(players[data.id]){
+
+                players[data.id].alive = false;
+
+            }
+
+
+            if(data.id === myId){
+
+                me.alive = false;
+
+                mouse.down = false;
+
+                deathOverlay.style.display =
+                    "flex";
+
+                pickSpectateTarget();
+
+            }
+
+            break;
+        }
+
+
+        case "respawn":{
+
+            if(data.id === myId){
+
+                me.x = data.x;
+                me.y = data.y;
+
+                me.health = data.health;
+
+                me.alive = true;
+
+                deathOverlay.style.display =
+                    "none";
+
+                spectateTargetId = null;
+
+            }
+            else if(players[data.id]){
+
+                const p = players[data.id];
+
+                p.x = data.x;
+                p.y = data.y;
+
+                p.targetX = data.x;
+                p.targetY = data.y;
+
+                p.health = data.health;
+
+                p.alive = true;
+
+            }
+
+            break;
+        }
+
+
+        case "chat":{
+
+            const name =
+                data.id === myId
+                ? myName
+                : (
+                    players[data.id]
+                    ? players[data.id].name
+                    : "Player" + data.id
+                );
+
+
+            addChatLine(
+                name,
+                data.text
+            );
+
+            break;
+        }
+
+    }
+
+};
+
+
+/* =========================
+   SPECTATE
+========================= */
+
+function pickSpectateTarget(){
+
+    const ids =
+        Object.keys(players)
+        .filter(
+            id =>
+                id != myId &&
+                players[id].alive
+        );
+
+
+    spectateTargetId =
+        ids.length
+        ? ids[0]
+        : null;
+
 }
 
-// ---- Simulation ----
+
+function cycleSpectateTarget(){
+
+    const ids =
+        Object.keys(players)
+        .filter(
+            id =>
+                id != myId &&
+                players[id].alive
+        );
+
+
+    if(!ids.length){
+
+        spectateTargetId = null;
+
+        return;
+    }
+
+
+    const cur =
+        ids.indexOf(
+            String(spectateTargetId)
+        );
+
+
+    spectateTargetId =
+        ids[(cur + 1) % ids.length];
+
+}
+
+
+/* =========================
+   MOVEMENT NETWORK
+========================= */
+
 let lastNetworkSend = 0;
 
-function update(dt) {
-    if (me.alive) {
-        let dx = 0, dy = 0;
-        if (keys["w"]) dy -= 1;
-        if (keys["s"]) dy += 1;
-        if (keys["a"]) dx -= 1;
-        if (keys["d"]) dx += 1;
 
-        if (dx !== 0 || dy !== 0) {
-            const len = Math.sqrt(dx * dx + dy * dy);
-            dx /= len; dy /= len;
-            me.x += dx * me.speed;
-            me.y += dy * me.speed;
-        }
+/* =========================
+   FRAME TIME
+========================= */
 
-        me.x = Math.max(20, Math.min(WORLD_W - 20, me.x));
-        me.y = Math.max(20, Math.min(WORLD_H - 20, me.y));
+let lastFrame = performance.now();
 
-        const worldMouseX = mouse.x + camX;
-        const worldMouseY = mouse.y + camY;
-        me.angle = Math.atan2(worldMouseY - me.y, worldMouseX - me.x);
 
-        const now = performance.now();
-        if (now - lastNetworkSend > UPDATE_SEND_INTERVAL && socket.readyState === WebSocket.OPEN) {
-            lastNetworkSend = now;
-            socket.send(JSON.stringify({ type: "update", x: me.x, y: me.y, angle: me.angle }));
-        }
+function update(dt){
 
-        if (mouse.down) shoot();
+    if(dt > 0.05){
+        dt = 0.05;
     }
 
-    // Smooth interpolation for remote players
-    for (const id in players) {
-        if (id == myId) continue;
+
+    if(me.alive){
+
+        let dx = 0;
+        let dy = 0;
+
+
+        if(keys["w"]) dy -= 1;
+        if(keys["s"]) dy += 1;
+        if(keys["a"]) dx -= 1;
+        if(keys["d"]) dx += 1;
+
+
+        if(dx !== 0 || dy !== 0){
+
+            const len =
+                Math.sqrt(dx * dx + dy * dy);
+
+            dx /= len;
+            dy /= len;
+
+
+            me.x +=
+                dx * me.speed * dt * 60;
+
+            me.y +=
+                dy * me.speed * dt * 60;
+
+        }
+
+
+        me.x =
+            Math.max(
+                20,
+                Math.min(
+                    WORLD_W - 20,
+                    me.x
+                )
+            );
+
+
+        me.y =
+            Math.max(
+                20,
+                Math.min(
+                    WORLD_H - 20,
+                    me.y
+                )
+            );
+
+
+        const worldMouseX =
+            mouse.x + camX;
+
+
+        const worldMouseY =
+            mouse.y + camY;
+
+
+        me.angle =
+            Math.atan2(
+                worldMouseY - me.y,
+                worldMouseX - me.x
+            );
+
+
+        const now =
+            performance.now();
+
+
+        if(
+            now - lastNetworkSend >=
+            UPDATE_SEND_INTERVAL
+        ){
+
+            if(
+                socket.readyState ===
+                WebSocket.OPEN
+            ){
+
+                lastNetworkSend = now;
+
+
+                socket.send(JSON.stringify({
+
+                    type:"update",
+
+                    x:me.x,
+                    y:me.y,
+
+                    angle:me.angle
+
+                }));
+
+            }
+
+        }
+
+
+        if(mouse.down){
+
+            shoot();
+
+        }
+
+    }
+
+
+    /* Remote players */
+
+    for(const id in players){
+
+        if(id == myId){
+            continue;
+        }
+
+
         const p = players[id];
-        if (p.targetX !== undefined) {
-            p.x += (p.targetX - p.x) * 0.35;
-            p.y += (p.targetY - p.y) * 0.35;
+
+
+        if(p.targetX !== undefined){
+
+            p.x +=
+                (p.targetX - p.x) * 0.55;
+
+            p.y +=
+                (p.targetY - p.y) * 0.55;
+
         }
+
     }
 
-    updateBullets();
-    updateBlood();
 
-    // Camera
-    let targetX = me.x, targetY = me.y;
-    if (!me.alive) {
-        if (spectateTargetId == null || !players[spectateTargetId] || !players[spectateTargetId].alive) {
+    updateBullets(dt);
+
+    updateBlood(dt);
+
+
+    /* =========================
+       CAMERA
+    ========================= */
+
+    let targetX = me.x;
+    let targetY = me.y;
+
+
+    if(!me.alive){
+
+        if(
+            spectateTargetId == null ||
+            !players[spectateTargetId] ||
+            !players[spectateTargetId].alive
+        ){
+
             pickSpectateTarget();
+
         }
-        if (spectateTargetId != null && players[spectateTargetId]) {
-            targetX = players[spectateTargetId].x;
-            targetY = players[spectateTargetId].y;
-            respawnText.textContent = "Spectating " + (players[spectateTargetId].name || "player") + " — press N to switch";
-        } else {
-            targetX = WORLD_W / 2; targetY = WORLD_H / 2;
-            respawnText.textContent = "Spectating — respawning soon...";
+
+
+        if(
+            spectateTargetId != null &&
+            players[spectateTargetId]
+        ){
+
+            targetX =
+                players[spectateTargetId].x;
+
+            targetY =
+                players[spectateTargetId].y;
+
+
+            respawnText.textContent =
+                "Spectating " +
+                (
+                    players[spectateTargetId].name ||
+                    "player"
+                ) +
+                " — press N to switch";
+
         }
+        else{
+
+            targetX = WORLD_W / 2;
+            targetY = WORLD_H / 2;
+
+            respawnText.textContent =
+                "Spectating — respawning soon...";
+
+        }
+
     }
 
-    camX = Math.max(0, Math.min(WORLD_W - canvas.width, targetX - canvas.width / 2));
-    camY = Math.max(0, Math.min(WORLD_H - canvas.height, targetY - canvas.height / 2));
-    if (WORLD_W < canvas.width) camX = -(canvas.width - WORLD_W) / 2;
-    if (WORLD_H < canvas.height) camY = -(canvas.height - WORLD_H) / 2;
+
+    camX =
+        Math.max(
+            0,
+            Math.min(
+                WORLD_W - innerWidth,
+                targetX - innerWidth / 2
+            )
+        );
+
+
+    camY =
+        Math.max(
+            0,
+            Math.min(
+                WORLD_H - innerHeight,
+                targetY - innerHeight / 2
+            )
+        );
+
+
+    if(WORLD_W < innerWidth){
+
+        camX =
+            -(innerWidth - WORLD_W) / 2;
+
+    }
+
+
+    if(WORLD_H < innerHeight){
+
+        camY =
+            -(innerHeight - WORLD_H) / 2;
+
+    }
+
 }
+
+
+/* =========================
+   SHOOTING
+========================= */
 
 let lastShot = 0;
-function shoot() {
-    if (!me.alive) return;
-    const now = performance.now();
-    if (now - lastShot < 130) return;
+
+
+function shoot(){
+
+    if(!me.alive){
+        return;
+    }
+
+
+    const now =
+        performance.now();
+
+
+    if(
+        now - lastShot <
+        FIRE_RATE
+    ){
+        return;
+    }
+
+
     lastShot = now;
 
-    createBullet(me.x, me.y, me.angle);
 
-    if (socket.readyState === WebSocket.OPEN) {
-        socket.send(JSON.stringify({ type: "shoot", x: me.x, y: me.y, angle: me.angle }));
+    /* LOCAL BULLET INSTANTLY */
+
+    createBullet(
+        me.x,
+        me.y,
+        me.angle
+    );
+
+
+    /* SERVER */
+
+    if(
+        socket.readyState ===
+        WebSocket.OPEN
+    ){
+
+        socket.send(JSON.stringify({
+
+            type:"shoot",
+
+            x:me.x,
+            y:me.y,
+
+            angle:me.angle
+
+        }));
+
     }
+
 }
 
-function createBullet(x, y, angle) {
+
+/* =========================
+   BULLETS
+========================= */
+
+function createBullet(x,y,angle){
+
+    if(bullets.length >= MAX_BULLETS){
+
+        bullets.shift();
+
+    }
+
+
     bullets.push({
-        x: x + Math.cos(angle) * 35,
-        y: y + Math.sin(angle) * 35,
-        angle, speed: 12, life: 80
+
+        x:
+            x +
+            Math.cos(angle) * 35,
+
+        y:
+            y +
+            Math.sin(angle) * 35,
+
+        angle,
+
+        speed:BULLET_SPEED,
+
+        life:BULLET_LIFE
+
     });
+
 }
 
-function updateBullets() {
-    for (let i = bullets.length - 1; i >= 0; i--) {
+
+function updateBullets(dt){
+
+    const frameScale =
+        dt * 60;
+
+
+    for(
+        let i = bullets.length - 1;
+        i >= 0;
+        i--
+    ){
+
         const b = bullets[i];
-        b.x += Math.cos(b.angle) * b.speed;
-        b.y += Math.sin(b.angle) * b.speed;
-        b.life--;
-        if (b.life <= 0 || b.x < -100 || b.y < -100 || b.x > WORLD_W + 100 || b.y > WORLD_H + 100) {
-            bullets.splice(i, 1);
+
+
+        b.x +=
+            Math.cos(b.angle) *
+            b.speed *
+            frameScale;
+
+
+        b.y +=
+            Math.sin(b.angle) *
+            b.speed *
+            frameScale;
+
+
+        b.life -= frameScale;
+
+
+        if(
+
+            b.life <= 0 ||
+
+            b.x < -100 ||
+
+            b.y < -100 ||
+
+            b.x > WORLD_W + 100 ||
+
+            b.y > WORLD_H + 100
+
+        ){
+
+            bullets.splice(i,1);
+
         }
+
     }
+
 }
 
-function spawnBlood(x, y) {
-    const count = 14;
-    for (let i = 0; i < count; i++) {
-        const a = Math.random() * Math.PI * 2;
-        const speed = 1.5 + Math.random() * 4;
+
+/* =========================
+   BLOOD
+========================= */
+
+function spawnBlood(x,y){
+
+    for(let i=0;i<14;i++){
+
+        if(blood.length >= MAX_BLOOD){
+
+            blood.shift();
+
+        }
+
+
+        const a =
+            Math.random() *
+            Math.PI * 2;
+
+
+        const speed =
+            1.5 +
+            Math.random() * 4;
+
+
         blood.push({
-            x, y,
-            vx: Math.cos(a) * speed,
-            vy: Math.sin(a) * speed,
-            r: 2 + Math.random() * 3,
-            life: 30 + Math.random() * 20,
-            maxLife: 50
+
+            x,
+            y,
+
+            vx:
+                Math.cos(a) *
+                speed,
+
+            vy:
+                Math.sin(a) *
+                speed,
+
+            r:
+                2 +
+                Math.random() * 3,
+
+            life:
+                30 +
+                Math.random() * 20,
+
+            maxLife:50
+
         });
+
     }
+
 }
 
-function updateBlood() {
-    for (let i = blood.length - 1; i >= 0; i--) {
+
+function updateBlood(dt){
+
+    const frameScale =
+        dt * 60;
+
+
+    for(
+        let i = blood.length - 1;
+        i >= 0;
+        i--
+    ){
+
         const b = blood[i];
-        b.x += b.vx;
-        b.y += b.vy;
-        b.vx *= 0.92;
-        b.vy = b.vy * 0.92 + 0.15; // gravity
-        b.life--;
-        if (b.life <= 0) blood.splice(i, 1);
+
+
+        b.x +=
+            b.vx *
+            frameScale;
+
+
+        b.y +=
+            b.vy *
+            frameScale;
+
+
+        b.vx *=
+            Math.pow(.92,frameScale);
+
+
+        b.vy =
+            b.vy *
+            Math.pow(.92,frameScale)
+            +
+            .15 * frameScale;
+
+
+        b.life -= frameScale;
+
+
+        if(b.life <= 0){
+
+            blood.splice(i,1);
+
+        }
+
     }
+
 }
 
-// ---- Rendering ----
-function drawBackground() {
-    ctx.fillStyle = "#202020";
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+/* =========================
+   BACKGROUND
+========================= */
+
+function drawBackground(){
+
+    ctx.fillStyle =
+        "#202020";
+
+    ctx.fillRect(
+        0,
+        0,
+        innerWidth,
+        innerHeight
+    );
+
 
     const grid = 50;
-    ctx.strokeStyle = "#292929";
+
+
+    ctx.strokeStyle =
+        "#292929";
+
     ctx.lineWidth = 1;
 
-    const startX = -((camX) % grid);
-    const startY = -((camY) % grid);
 
-    for (let x = startX; x < canvas.width; x += grid) {
-        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, canvas.height); ctx.stroke();
-    }
-    for (let y = startY; y < canvas.height; y += grid) {
-        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(canvas.width, y); ctx.stroke();
+    const startX =
+        -(
+            camX % grid
+        );
+
+
+    const startY =
+        -(
+            camY % grid
+        );
+
+
+    for(
+        let x = startX;
+        x < innerWidth;
+        x += grid
+    ){
+
+        ctx.beginPath();
+
+        ctx.moveTo(x,0);
+
+        ctx.lineTo(x,innerHeight);
+
+        ctx.stroke();
+
     }
 
-    // world bounds
-    ctx.strokeStyle = "#444";
+
+    for(
+        let y = startY;
+        y < innerHeight;
+        y += grid
+    ){
+
+        ctx.beginPath();
+
+        ctx.moveTo(0,y);
+
+        ctx.lineTo(innerWidth,y);
+
+        ctx.stroke();
+
+    }
+
+
+    ctx.strokeStyle =
+        "#444";
+
     ctx.lineWidth = 3;
-    ctx.strokeRect(-camX, -camY, WORLD_W, WORLD_H);
+
+
+    ctx.strokeRect(
+        -camX,
+        -camY,
+        WORLD_W,
+        WORLD_H
+    );
+
 }
 
-function drawHealthBar(sx, sy, health, isMe) {
-    const w = 50, h = 6;
-    const pct = Math.max(0, Math.min(1, health / MAX_HEALTH));
 
-    ctx.fillStyle = "rgba(0,0,0,.6)";
-    ctx.fillRect(sx - w / 2 - 1, sy - 1, w + 2, h + 2);
+/* =========================
+   HEALTH
+========================= */
 
-    ctx.fillStyle = "#3a3a3a";
-    ctx.fillRect(sx - w / 2, sy, w, h);
+function drawHealthBar(
+    sx,
+    sy,
+    health,
+    isMe
+){
 
-    ctx.fillStyle = pct > 0.5 ? "#35ff6b" : pct > 0.2 ? "#ffcf35" : "#ff3b3b";
-    ctx.fillRect(sx - w / 2, sy, w * pct, h);
+    const w = 50;
+    const h = 6;
+
+
+    const pct =
+        Math.max(
+            0,
+            Math.min(
+                1,
+                health / MAX_HEALTH
+            )
+        );
+
+
+    ctx.fillStyle =
+        "rgba(0,0,0,.6)";
+
+
+    ctx.fillRect(
+        sx - w / 2 - 1,
+        sy - 1,
+        w + 2,
+        h + 2
+    );
+
+
+    ctx.fillStyle =
+        "#3a3a3a";
+
+
+    ctx.fillRect(
+        sx - w / 2,
+        sy,
+        w,
+        h
+    );
+
+
+    ctx.fillStyle =
+        pct > .5
+        ? "#35ff6b"
+        : pct > .2
+        ? "#ffcf35"
+        : "#ff3b3b";
+
+
+    ctx.fillRect(
+        sx - w / 2,
+        sy,
+        w * pct,
+        h
+    );
+
 }
 
-function drawPlayer(p, sx, sy, isMe) {
-    if (p.alive === false) return;
+
+/* =========================
+   PLAYER
+========================= */
+
+function drawPlayer(
+    p,
+    sx,
+    sy,
+    isMe
+){
+
+    if(p.alive === false){
+        return;
+    }
+
 
     ctx.save();
-    ctx.translate(sx, sy);
-    ctx.drawImage(playerImage, -32, -32, 64, 64);
-    ctx.rotate(p.angle || 0);
-    ctx.drawImage(gunImage, 5, -12, 55, 24);
+
+
+    ctx.translate(
+        sx,
+        sy
+    );
+
+
+    ctx.drawImage(
+        playerImage,
+        -32,
+        -32,
+        64,
+        64
+    );
+
+
+    ctx.rotate(
+        p.angle || 0
+    );
+
+
+    ctx.drawImage(
+        gunImage,
+        5,
+        -12,
+        55,
+        24
+    );
+
+
     ctx.restore();
 
-    drawHealthBar(sx, sy - 48, p.health !== undefined ? p.health : MAX_HEALTH, isMe);
 
-    if (p.name) {
-        ctx.fillStyle = isMe ? "#7cffb0" : "#ffffff";
-        ctx.font = "12px Arial";
-        ctx.textAlign = "center";
-        ctx.fillText(p.name, sx, sy - 55);
+    drawHealthBar(
+        sx,
+        sy - 48,
+        p.health !== undefined
+        ? p.health
+        : MAX_HEALTH,
+        isMe
+    );
+
+
+    if(p.name){
+
+        ctx.fillStyle =
+            isMe
+            ? "#7cffb0"
+            : "#ffffff";
+
+
+        ctx.font =
+            "12px Arial";
+
+
+        ctx.textAlign =
+            "center";
+
+
+        ctx.fillText(
+            p.name,
+            sx,
+            sy - 55
+        );
+
     }
+
 }
 
-function drawBullets() {
-    for (const b of bullets) {
+
+/* =========================
+   BULLET DRAW
+========================= */
+
+function drawBullets(){
+
+    for(const b of bullets){
+
         ctx.save();
-        ctx.translate(b.x - camX, b.y - camY);
-        ctx.rotate(b.angle);
-        ctx.drawImage(bulletImage, -10, -5, 20, 10);
+
+
+        ctx.translate(
+            b.x - camX,
+            b.y - camY
+        );
+
+
+        ctx.rotate(
+            b.angle
+        );
+
+
+        ctx.drawImage(
+            bulletImage,
+            -10,
+            -5,
+            20,
+            10
+        );
+
+
         ctx.restore();
+
     }
+
 }
 
-function drawBlood() {
-    for (const b of blood) {
-        ctx.globalAlpha = Math.max(0, b.life / b.maxLife);
-        ctx.fillStyle = "#b30000";
+
+/* =========================
+   BLOOD DRAW
+========================= */
+
+function drawBlood(){
+
+    for(const b of blood){
+
+        ctx.globalAlpha =
+            Math.max(
+                0,
+                b.life / b.maxLife
+            );
+
+
+        ctx.fillStyle =
+            "#b30000";
+
+
         ctx.beginPath();
-        ctx.arc(b.x - camX, b.y - camY, b.r, 0, Math.PI * 2);
+
+
+        ctx.arc(
+            b.x - camX,
+            b.y - camY,
+            b.r,
+            0,
+            Math.PI * 2
+        );
+
+
         ctx.fill();
+
     }
+
+
     ctx.globalAlpha = 1;
+
 }
 
-function draw() {
+
+/* =========================
+   RENDER
+========================= */
+
+function draw(){
+
     drawBackground();
+
     drawBlood();
+
     drawBullets();
 
-    for (const id in players) {
-        const p = (id == myId) ? me : players[id];
-        drawPlayer(p, p.x - camX, p.y - camY, id == myId);
+
+    for(const id in players){
+
+        const p =
+            id == myId
+            ? me
+            : players[id];
+
+
+        drawPlayer(
+            p,
+            p.x - camX,
+            p.y - camY,
+            id == myId
+        );
+
     }
+
 }
 
-function loop() {
-    update();
+
+/* =========================
+   GAME LOOP
+========================= */
+
+function loop(now){
+
+    const dt =
+        (now - lastFrame) / 1000;
+
+
+    lastFrame = now;
+
+
+    update(dt);
+
     draw();
+
+
     requestAnimationFrame(loop);
+
 }
 
-playerImage.onload = () => { loop(); };
-if (playerImage.complete) loop();
+
+/* =========================
+   START
+========================= */
+
+function start(){
+
+    requestAnimationFrame(loop);
+
+}
+
+
+if(
+    playerImage.complete
+){
+
+    start();
+
+}
+else{
+
+    playerImage.onload =
+        start;
+
+}
+
 </script>
 
 </body>
 </html>
+```
